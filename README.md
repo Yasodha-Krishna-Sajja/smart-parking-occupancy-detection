@@ -12,8 +12,6 @@
 
 **Real-time parking lot occupancy detection using Computer Vision and Deep Learning**
 
-[🔍 Features](#-features) • [🖼️ Demo](#️-demo) • [🧠 CNN Architecture](#-cnn-architecture) • [📁 Project Structure](#-project-structure) • [⚙️ Installation](#️-installation) • [🚀 Usage](#-usage) • [📊 Results](#-results) • [👥 Authors](#-authors)
-
 </div>
 
 ---
@@ -24,7 +22,7 @@ The **Smart Parking Occupancy Detection System** is a full end-to-end deep learn
 
 The system uses a **Convolutional Neural Network (CNN)** trained on the PKLot dataset to classify each of **100 parking slots per frame** in real time. It provides a complete **Flask web dashboard** with live video streaming, analytics, and session history — all backed by a **SQLite database**.
 
-> 🎓 Developed as a B.Tech final year project at **RGUKT RK Valley, Andhra Pradesh**
+> 🎓 Developed as a Mini project at **RGUKT RK Valley, Andhra Pradesh**
 
 ---
 
@@ -117,8 +115,8 @@ Rather than running object detection on every frame, slot positions are pre-defi
 
 <table>
 <tr>
-<td align="center"><img src="readme_assets/preprocessed_empty.jpeg" width="160"><br><b>Empty slot (64×64)</b></td>
-<td align="center"><img src="readme_assets/preprocessed_occupied.jpeg" width="160"><br><b>Occupied slot (64×64)</b></td>
+<td align="center"><img src="assets/slots_empty.png" width="160"><br><b>Empty slot (64×64)</b></td>
+<td align="center"><img src="assets/slots_occupied.png" width="160"><br><b>Occupied slot (64×64)</b></td>
 </tr>
 </table>
 
@@ -392,7 +390,6 @@ CREATE TABLE frames (
 | Name | Roll Number |
 |------|------------|
 | **S. Yasodha Krishna** | R210045 |
-| **L. Sandhya** | R210390 |
 
 **Guide:** Dr. B. Nagaraja Naik, Ph.D. — Assistant Professor, CSE
 **Institution:** Rajiv Gandhi University of Knowledge Technologies (RGUKT), RK Valley, Y.S.R. Kadapa, Andhra Pradesh — 516330
@@ -413,7 +410,5 @@ CREATE TABLE frames (
 <div align="center">
 
 ⭐ **If you found this project useful, please give it a star!** ⭐
-
-Made with ❤️ by S. Yasodha Krishna & L. Sandhya — RGUKT RK Valley
 
 </div>
