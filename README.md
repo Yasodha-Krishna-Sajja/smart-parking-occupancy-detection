@@ -34,23 +34,23 @@ The system uses a **Convolutional Neural Network (CNN)** trained on the PKLot da
 
 The dashboard streams the uploaded video frame-by-frame, drawing a live overlay on every one of the 100 slots — green for empty, red for occupied — alongside a real-time statistics panel.
 
-![Dashboard Live Detection](readme_assets/dashboard_live_detection.jpeg)
+![Dashboard Live Detection](assets/live_detection_dashboard.png)
 
 ### Detection Output Close-Up
 
 Each frame is annotated with per-slot bounding boxes and a running empty/occupied counter in the corner.
 
-![Live Detection Overlay](readme_assets/live_detection_overlay.jpeg)
+![Live Detection Overlay](assets/detection_output.png)
 
 ### Home Page
 
-![Home Page](readme_assets/home_page.png)
+![Home Page](assets/home_page.png)
 
 ### Session History
 
 Every processed video is logged with timestamp, frame count, and average/peak/minimum occupancy rate, and can be revisited or deleted.
 
-![Session History](readme_assets/history_page.png)
+![Session History](assets/session_history.png)
 
 ---
 
@@ -111,7 +111,7 @@ Dense (1 neuron, Sigmoid)         → Output: 0 = Empty | 1 = Occupied
 
 Rather than running object detection on every frame, slot positions are pre-defined as 100 bounding polygons in `slots.json` (realistic for a fixed-camera deployment). Each frame is cropped at these coordinates, resized to 64×64, and passed through the CNN individually.
 
-![Slot Coordinates Visualization](readme_assets/slot_coordinates.jpeg)
+![Slot Coordinates Visualization](assets/slots.png)
 
 **Preprocessing pipeline applied to every slot crop:**
 
@@ -135,7 +135,7 @@ Rather than running object detection on every frame, slot positions are pre-defi
 | 9 | 97.8% | 97.2% | 0.089 |
 | 13 (Stop) | **99.2%** | **99.0%** | **0.028** |
 
-![Training Accuracy and Loss Curves](readme_assets/training_curves.png)
+![Training Accuracy and Loss Curves](assets/training_graphs.png)
 
 ### 🌦️ Weather Condition Accuracy
 
@@ -145,7 +145,7 @@ Rather than running object detection on every frame, slot positions are pre-defi
 | ☁️ Cloudy | 100 per frame | 99 per frame | **99%** |
 | 🌧️ Rainy | 100 per frame | 99 per frame | **99%** |
 
-![Weather Accuracy Comparison](readme_assets/weather_accuracy_chart.png)
+![Weather Accuracy Comparison](assets/weather_accuracy.png)
 
 ### 🎯 Other Key Results
 
@@ -220,7 +220,7 @@ smart-parking-occupancy-detection/
 
 ## 📋 Dataset — PKLot
 
-![PKLot Sample](readme_assets/pklot_sample.jpeg)
+![PKLot Sample](assets/dataset_pklot.png)
 
 | Property | Details |
 |----------|---------|
