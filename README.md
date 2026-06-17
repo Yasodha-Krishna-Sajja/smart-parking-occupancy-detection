@@ -12,7 +12,7 @@
 
 **Real-time parking lot occupancy detection using Computer Vision and Deep Learning**
 
-[🔍 Features](#-features) • [🧠 CNN Architecture](#-cnn-architecture) • [📁 Project Structure](#-project-structure) • [⚙️ Installation](#️-installation) • [🚀 Usage](#-usage) • [📊 Results](#-results) • [👥 Authors](#-authors)
+[🔍 Features](#-features) • [🖼️ Demo](#️-demo) • [🧠 CNN Architecture](#-cnn-architecture) • [📁 Project Structure](#-project-structure) • [⚙️ Installation](#️-installation) • [🚀 Usage](#-usage) • [📊 Results](#-results) • [👥 Authors](#-authors)
 
 </div>
 
@@ -25,6 +25,32 @@ The **Smart Parking Occupancy Detection System** is a full end-to-end deep learn
 The system uses a **Convolutional Neural Network (CNN)** trained on the PKLot dataset to classify each of **100 parking slots per frame** in real time. It provides a complete **Flask web dashboard** with live video streaming, analytics, and session history — all backed by a **SQLite database**.
 
 > 🎓 Developed as a B.Tech final year project at **RGUKT RK Valley, Andhra Pradesh**
+
+---
+
+## 🖼️ Demo
+
+### Live Detection Dashboard
+
+The dashboard streams the uploaded video frame-by-frame, drawing a live overlay on every one of the 100 slots — green for empty, red for occupied — alongside a real-time statistics panel.
+
+![Dashboard Live Detection](readme_assets/dashboard_live_detection.jpeg)
+
+### Detection Output Close-Up
+
+Each frame is annotated with per-slot bounding boxes and a running empty/occupied counter in the corner.
+
+![Live Detection Overlay](readme_assets/live_detection_overlay.jpeg)
+
+### Home Page
+
+![Home Page](readme_assets/home_page.png)
+
+### Session History
+
+Every processed video is logged with timestamp, frame count, and average/peak/minimum occupancy rate, and can be revisited or deleted.
+
+![Session History](readme_assets/history_page.png)
 
 ---
 
@@ -81,6 +107,21 @@ Dense (1 neuron, Sigmoid)         → Output: 0 = Empty | 1 = Occupied
 | Actual Stop Epoch | **13** |
 | Final Accuracy | **99%** |
 
+### How Slot Detection Works
+
+Rather than running object detection on every frame, slot positions are pre-defined as 100 bounding polygons in `slots.json` (realistic for a fixed-camera deployment). Each frame is cropped at these coordinates, resized to 64×64, and passed through the CNN individually.
+
+![Slot Coordinates Visualization](readme_assets/slot_coordinates.jpeg)
+
+**Preprocessing pipeline applied to every slot crop:**
+
+<table>
+<tr>
+<td align="center"><img src="readme_assets/preprocessed_empty.jpeg" width="160"><br><b>Empty slot (64×64)</b></td>
+<td align="center"><img src="readme_assets/preprocessed_occupied.jpeg" width="160"><br><b>Occupied slot (64×64)</b></td>
+</tr>
+</table>
+
 ---
 
 ## 📊 Results
@@ -94,6 +135,8 @@ Dense (1 neuron, Sigmoid)         → Output: 0 = Empty | 1 = Occupied
 | 9 | 97.8% | 97.2% | 0.089 |
 | 13 (Stop) | **99.2%** | **99.0%** | **0.028** |
 
+![Training Accuracy and Loss Curves](readme_assets/training_curves.png)
+
 ### 🌦️ Weather Condition Accuracy
 
 | Weather Condition | Total Slots | Correctly Classified | Accuracy |
@@ -101,6 +144,8 @@ Dense (1 neuron, Sigmoid)         → Output: 0 = Empty | 1 = Occupied
 | ☀️ Sunny | 100 per frame | 99 per frame | **99%** |
 | ☁️ Cloudy | 100 per frame | 99 per frame | **99%** |
 | 🌧️ Rainy | 100 per frame | 99 per frame | **99%** |
+
+![Weather Accuracy Comparison](readme_assets/weather_accuracy_chart.png)
 
 ### 🎯 Other Key Results
 
@@ -139,6 +184,8 @@ smart-parking-occupancy-detection/
 │   ├── weather_accuracy.json    ← Weather test results
 │   └── training_graph.png       ← CNN training curves
 │
+├── 📁 readme_assets/            ← Screenshots used in this README
+│
 └── 📁 development/              ← Step-by-step development scripts
     ├── step1_opencv_basics.py
     ├── step2_slot_marking.py
@@ -172,6 +219,8 @@ smart-parking-occupancy-detection/
 ---
 
 ## 📋 Dataset — PKLot
+
+![PKLot Sample](readme_assets/pklot_sample.jpeg)
 
 | Property | Details |
 |----------|---------|
@@ -328,11 +377,13 @@ CREATE TABLE frames (
 
 - 📡 **Live IP Camera / RTSP Stream** integration
 - 🤖 **Transfer Learning** with MobileNetV2 / ResNet50
+- 🧩 **Automatic Slot Detection** using segmentation (U-Net / Mask R-CNN) instead of manual JSON coordinates
 - 📱 **Mobile Application** for real-time parking availability
 - 🌙 **Night-time detection** with low-light enhancement
 - ☁️ **Cloud deployment** for multi-parking-lot support
 - 📈 **Predictive Analytics** using LSTM for occupancy forecasting
 - 🔔 **Alert System** for threshold-based notifications
+- 🔐 **User Authentication** for multi-tenant deployments
 
 ---
 
@@ -343,7 +394,7 @@ CREATE TABLE frames (
 | **S. Yasodha Krishna** | R210045 |
 | **L. Sandhya** | R210390 |
 
-**Guide:** Dr. B. Nagaraja Naik, Ph.D. — Assistant Professor, CSE  
+**Guide:** Dr. B. Nagaraja Naik, Ph.D. — Assistant Professor, CSE
 **Institution:** Rajiv Gandhi University of Knowledge Technologies (RGUKT), RK Valley, Y.S.R. Kadapa, Andhra Pradesh — 516330
 
 ---
