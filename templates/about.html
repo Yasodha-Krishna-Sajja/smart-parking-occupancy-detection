@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .about-grid {
+        display               : grid;
+        grid-template-columns : 1fr 1fr;
+        gap                   : 25px;
+        margin-bottom         : 25px;
+    }
+
+    .step-item {
+        display       : flex;
+        gap           : 15px;
+        margin-bottom : 20px;
+        align-items   : flex-start;
+    }
+
+    .step-number {
+        background-color : #00ff88;
+        color            : #1a1a2e;
+        width            : 36px;
+        height           : 36px;
+        border-radius    : 50%;
+        display          : flex;
+        align-items      : center;
+        justify-content  : center;
+        font-weight      : bold;
+        font-size        : 0.9rem;
+        flex-shrink      : 0;
+    }
+
+    .step-content h4 {
+        color         : white;
+        margin-bottom : 4px;
+        font-size     : 1rem;
+    }
+
+    .step-content p {
+        color       : #888;
+        font-size   : 0.88rem;
+        line-height : 1.6;
+    }
+
+    .layer-item {
+        background-color : #0f3460;
+        border-radius    : 8px;
+        padding          : 12px 15px;
+        margin-bottom    : 8px;
+        display          : flex;
+        justify-content  : space-between;
+        align-items      : center;
+    }
+
+    .layer-name  { color: white; font-size: 0.95rem; font-weight: bold; }
+    .layer-desc  { color: #888; font-size: 0.82rem; }
+    .layer-badge {
+        background-color : #00ff8822;
+        color            : #00ff88;
+        padding          : 3px 10px;
+        border-radius    : 20px;
+        font-size        : 0.8rem;
+    }
+
+    .tech-grid {
+        display               : grid;
+        grid-template-columns : repeat(3, 1fr);
+        gap                   : 12px;
+    }
+
+    .tech-card {
+        background-color : #0f3460;
+        border-radius    : 8px;
+        padding          : 15px;
+        text-align       : center;
+    }
+
+    .tech-icon  { font-size: 1.8rem; margin-bottom: 8px; }
+    .tech-name  { color: white; font-weight: bold; font-size: 0.9rem; }
+    .tech-use   { color: #888; font-size: 0.8rem; margin-top: 4px; }
+
+    .dataset-row {
+        display         : flex;
+        justify-content : space-between;
+        padding         : 10px 0;
+        border-bottom   : 1px solid #0f3460;
+    }
+    .dataset-row:last-child { border-bottom: none; }
+    .dataset-key   { color: #888; font-size: 0.9rem; }
+    .dataset-value { color: white; font-weight: bold; }
+</style>
+
+<!-- Page Title -->
+<div style="margin-bottom:25px;">
+    <h1 style="color:#00ff88; font-size:1.8rem;">🧠 About The Model</h1>
+    <p style="color:#888; margin-top:5px;">
+        Architecture, dataset, training process and technology stack
+    </p>
+</div>
+
+<!-- Top Grid -->
+<div class="about-grid">
+
+    <!-- CNN Architecture -->
+    <div class="card">
+        <h2>🏗️ CNN Architecture</h2>
+
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Input Layer</div>
+                <div class="layer-desc">64 × 64 × 3 RGB image</div>
+            </div>
+            <span class="layer-badge">Input</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Conv2D (32 filters)</div>
+                <div class="layer-desc">3×3 kernel · ReLU · finds edges</div>
+            </div>
+            <span class="layer-badge">Conv</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">MaxPooling (2×2)</div>
+                <div class="layer-desc">Reduces size 64→32</div>
+            </div>
+            <span class="layer-badge">Pool</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Conv2D (64 filters)</div>
+                <div class="layer-desc">3×3 kernel · ReLU · finds shapes</div>
+            </div>
+            <span class="layer-badge">Conv</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">MaxPooling (2×2)</div>
+                <div class="layer-desc">Reduces size 32→16</div>
+            </div>
+            <span class="layer-badge">Pool</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Conv2D (128 filters)</div>
+                <div class="layer-desc">3×3 kernel · ReLU · finds patterns</div>
+            </div>
+            <span class="layer-badge">Conv</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">MaxPooling (2×2)</div>
+                <div class="layer-desc">Reduces size 16→8</div>
+            </div>
+            <span class="layer-badge">Pool</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Flatten</div>
+                <div class="layer-desc">Converts 3D → 1D (4608 values)</div>
+            </div>
+            <span class="layer-badge">Flat</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Dense (128 neurons)</div>
+                <div class="layer-desc">ReLU · makes final decision</div>
+            </div>
+            <span class="layer-badge">Dense</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Dropout (50%)</div>
+                <div class="layer-desc">Prevents overfitting</div>
+            </div>
+            <span class="layer-badge">Drop</span>
+        </div>
+        <div class="layer-item">
+            <div>
+                <div class="layer-name">Output (1 neuron)</div>
+                <div class="layer-desc">Sigmoid · 0=Empty · 1=Occupied</div>
+            </div>
+            <span class="layer-badge">Output</span>
+        </div>
+    </div>
+
+    <!-- Dataset Info -->
+    <div>
+        <div class="card">
+            <h2>📦 Dataset — PKLot</h2>
+            <div class="dataset-row">
+                <span class="dataset-key">Total Images</span>
+                <span class="dataset-value">695,851</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Used For Training</span>
+                <span class="dataset-value">1,000 images</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Empty Images</span>
+                <span class="dataset-value">500</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Occupied Images</span>
+                <span class="dataset-value">500</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Image Size</span>
+                <span class="dataset-value">64 × 64 px</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Locations</span>
+                <span class="dataset-value">3 (PUCPR, UFPR04, UFPR05)</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Weather Conditions</span>
+                <span class="dataset-value">Sunny, Cloudy, Rainy</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Train / Test Split</span>
+                <span class="dataset-value">80% / 20%</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Final Accuracy</span>
+                <span class="dataset-value"
+                      style="color:#00ff88;">99%</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>⚙️ Training Configuration</h2>
+            <div class="dataset-row">
+                <span class="dataset-key">Optimizer</span>
+                <span class="dataset-value">Adam</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Loss Function</span>
+                <span class="dataset-value">Binary Crossentropy</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Max Epochs</span>
+                <span class="dataset-value">20</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Stopped At Epoch</span>
+                <span class="dataset-value">13 (Early Stopping)</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Batch Size</span>
+                <span class="dataset-value">32</span>
+            </div>
+            <div class="dataset-row">
+                <span class="dataset-key">Patience</span>
+                <span class="dataset-value">5 epochs</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Steps -->
+<div class="card">
+    <h2>🔄 How The System Works</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+        <div>
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Slot Coordinates Loaded</h4>
+                    <p>slots.json contains 4 corner points for all 100 parking slots extracted from PKLot XML files.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Video Uploaded</h4>
+                    <p>User uploads a raw parking lot video through the dashboard. Flask saves it to static/uploads/.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Background Thread Starts</h4>
+                    <p>Flask creates a background thread to process video without freezing the browser.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Frame by Frame Processing</h4>
+                    <p>Each video frame is read and all 100 slot crops are extracted using OpenCV.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="step-item">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h4>Batch CNN Prediction</h4>
+                    <p>All 100 crops sent to CNN in one batch. Model returns 100 predictions instantly — 10x faster!</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h4>Boxes Drawn</h4>
+                    <p>GREEN box = Empty slot. RED box = Occupied slot. Frame encoded as JPEG and stored.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h4>Live Streaming</h4>
+                    <p>MJPEG streaming sends frames to browser in real time. Stats update every second.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h4>Session Saved</h4>
+                    <p>All frame data saved to SQLite database. View complete history anytime in History page.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tech Stack -->
+<div class="card">
+    <h2>🛠️ Technology Stack</h2>
+    <div class="tech-grid">
+        <div class="tech-card">
+            <div class="tech-icon">🐍</div>
+            <div class="tech-name">Python 3.12</div>
+            <div class="tech-use">Core language</div>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">👁️</div>
+            <div class="tech-name">OpenCV</div>
+            <div class="tech-use">Image & video processing</div>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">🧠</div>
+            <div class="tech-name">TensorFlow / Keras</div>
+            <div class="tech-use">CNN training & prediction</div>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">🌐</div>
+            <div class="tech-name">Flask</div>
+            <div class="tech-use">Web server & API</div>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">🗃️</div>
+            <div class="tech-name">SQLite</div>
+            <div class="tech-use">Session database</div>
+        </div>
+        <div class="tech-card">
+            <div class="tech-icon">📊</div>
+            <div class="tech-name">Chart.js</div>
+            <div class="tech-use">Interactive graphs</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

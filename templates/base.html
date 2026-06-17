@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ---- Reset ---- */
+        * {
+            margin     : 0;
+            padding    : 0;
+            box-sizing : border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color : #1a1a2e;
+            color            : white;
+            min-height       : 100vh;
+        }
+
+        /* ---- Navbar ---- */
+        .navbar {
+            background-color : #16213e;
+            border-bottom    : 2px solid #0f3460;
+            padding          : 0 40px;
+            display          : flex;
+            align-items      : center;
+            justify-content  : space-between;
+            height           : 65px;
+            position         : sticky;
+            top              : 0;
+            z-index          : 100;
+        }
+
+        .navbar-brand {
+            font-size   : 1.3rem;
+            font-weight : bold;
+            color       : #00ff88;
+            text-decoration : none;
+        }
+
+        .navbar-brand span {
+            color : white;
+        }
+
+        .navbar-links {
+            display    : flex;
+            gap        : 5px;
+            list-style : none;
+        }
+
+        .navbar-links a {
+            color           : #aaa;
+            text-decoration : none;
+            padding         : 8px 16px;
+            border-radius   : 6px;
+            font-size       : 0.95rem;
+            transition      : all 0.2s;
+        }
+
+        .navbar-links a:hover {
+            color            : white;
+            background-color : #0f3460;
+        }
+
+        .navbar-links a.active {
+            color            : #1a1a2e;
+            background-color : #00ff88;
+            font-weight      : bold;
+        }
+
+        /* ---- Page Content ---- */
+        .page-content {
+            max-width : 1200px;
+            margin    : 30px auto;
+            padding   : 0 20px;
+        }
+
+        /* ---- Common Card ---- */
+        .card {
+            background-color : #16213e;
+            border-radius    : 10px;
+            padding          : 25px;
+            border           : 1px solid #0f3460;
+            margin-bottom    : 25px;
+        }
+
+        .card h2 {
+            color         : #00ff88;
+            margin-bottom : 20px;
+            font-size     : 1.3rem;
+        }
+
+        /* ---- Buttons ---- */
+        .btn-primary {
+            background-color : #00ff88;
+            color            : #1a1a2e;
+            padding          : 10px 25px;
+            border           : none;
+            border-radius    : 6px;
+            cursor           : pointer;
+            font-size        : 1rem;
+            font-weight      : bold;
+        }
+
+        .btn-primary:hover {
+            background-color : #00cc6a;
+        }
+
+        .btn-secondary {
+            background-color : #0f3460;
+            color            : white;
+            padding          : 10px 25px;
+            border           : none;
+            border-radius    : 6px;
+            cursor           : pointer;
+            font-size        : 1rem;
+        }
+
+        .btn-secondary:hover {
+            background-color : #1a4a8e;
+        }
+
+        .btn-danger {
+            background-color : #ff4444;
+            color            : white;
+            padding          : 8px 15px;
+            border           : none;
+            border-radius    : 6px;
+            cursor           : pointer;
+            font-size        : 0.85rem;
+        }
+
+        .btn-danger:hover {
+            background-color : #cc0000;
+        }
+
+        /* ---- Footer ---- */
+        .footer {
+            text-align       : center;
+            padding          : 20px;
+            color            : #555;
+            background-color : #16213e;
+            border-top       : 1px solid #0f3460;
+            margin-top       : 40px;
+            font-size        : 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            🚗  Smart<span>Parking </span>
+        </a>
+        <ul class="navbar-links">
+            <a href="/"          id="nav-home">🏠 Home</a>
+            <a href="/dashboard" id="nav-dashboard">📹 Dashboard</a>
+            <a href="/analytics" id="nav-analytics">📊 Analytics</a>
+            <a href="/history"   id="nav-history">🕘 History</a>
+            <a href="/about"     id="nav-about">🧠 About Model</a>
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Smart Parking Occupancy Detection System</p>
+        <p>Built with Python · OpenCV · TensorFlow · Flask</p>
+    </div>
+
+    <!-- Active Nav Link Script -->
+    <script>
+        const path = window.location.pathname;
+        if (path === '/')           document.getElementById('nav-home').classList.add('active');
+        if (path === '/dashboard')  document.getElementById('nav-dashboard').classList.add('active');
+        if (path === '/analytics')  document.getElementById('nav-analytics').classList.add('active');
+        if (path === '/history')    document.getElementById('nav-history').classList.add('active');
+        if (path === '/about')      document.getElementById('nav-about').classList.add('active');
+    </script>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

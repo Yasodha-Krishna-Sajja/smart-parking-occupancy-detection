@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .hero {
+        text-align : center;
+        padding    : 80px 20px 60px;
+    }
+
+    .hero h1 {
+        font-size     : 3rem;
+        color         : #00ff88;
+        margin-bottom : 20px;
+        line-height   : 1.2;
+    }
+
+    .hero p {
+        font-size     : 1.2rem;
+        color         : #aaa;
+        max-width     : 600px;
+        margin        : 0 auto 40px;
+        line-height   : 1.8;
+    }
+
+    .hero-buttons {
+        display    : flex;
+        gap        : 15px;
+        justify-content : center;
+    }
+
+    .btn-hero {
+        background-color : #00ff88;
+        color            : #1a1a2e;
+        padding          : 15px 40px;
+        border           : none;
+        border-radius    : 8px;
+        cursor           : pointer;
+        font-size        : 1.1rem;
+        font-weight      : bold;
+        text-decoration  : none;
+    }
+
+    .btn-hero:hover {
+        background-color : #00cc6a;
+    }
+
+    .btn-hero-outline {
+        background-color : transparent;
+        color            : #00ff88;
+        padding          : 15px 40px;
+        border           : 2px solid #00ff88;
+        border-radius    : 8px;
+        cursor           : pointer;
+        font-size        : 1.1rem;
+        font-weight      : bold;
+        text-decoration  : none;
+    }
+
+    .btn-hero-outline:hover {
+        background-color : #00ff8822;
+    }
+
+    /* ---- Features Grid ---- */
+    .features {
+        display               : grid;
+        grid-template-columns : repeat(3, 1fr);
+        gap                   : 20px;
+        margin-top            : 60px;
+    }
+
+    .feature-card {
+        background-color : #16213e;
+        border-radius    : 10px;
+        padding          : 30px 20px;
+        text-align       : center;
+        border           : 1px solid #0f3460;
+    }
+
+    .feature-card:hover {
+        border-color : #00ff88;
+    }
+
+    .feature-icon {
+        font-size     : 2.5rem;
+        margin-bottom : 15px;
+    }
+
+    .feature-card h3 {
+        color         : white;
+        margin-bottom : 10px;
+        font-size     : 1.1rem;
+    }
+
+    .feature-card p {
+        color     : #888;
+        font-size : 0.9rem;
+        line-height : 1.6;
+    }
+
+    /* ---- Stats Bar ---- */
+    .stats-bar {
+        display               : grid;
+        grid-template-columns : repeat(4, 1fr);
+        gap                   : 20px;
+        margin-top            : 50px;
+        padding               : 30px;
+        background-color      : #16213e;
+        border-radius         : 10px;
+        border                : 1px solid #0f3460;
+    }
+
+    .stat-item {
+        text-align : center;
+    }
+
+    .stat-number {
+        font-size   : 2rem;
+        font-weight : bold;
+        color       : #00ff88;
+    }
+
+    .stat-desc {
+        color     : #888;
+        font-size : 0.85rem;
+        margin-top: 5px;
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>🚗 Smart Parking<br>Occupancy Detection</h1>
+    <p>
+        Real-time parking slot detection using Computer Vision
+        and Deep Learning. Upload any parking lot video and
+        instantly see which slots are empty or occupied.
+    </p>
+    <div class="hero-buttons">
+        <a href="/dashboard" class="btn-hero">
+            🔍 Start Detection
+        </a>
+        <a href="/about" class="btn-hero-outline">
+            🧠 About Model
+        </a>
+    </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="stat-number">99%</div>
+        <div class="stat-desc">Model Accuracy</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">100</div>
+        <div class="stat-desc">Slots Detected</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">695K+</div>
+        <div class="stat-desc">Training Images</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-desc">Weather Conditions</div>
+    </div>
+</div>
+
+<!-- Features Grid -->
+<div class="features">
+    <div class="feature-card">
+        <div class="feature-icon">🎥</div>
+        <h3>Live Video Detection</h3>
+        <p>Upload any raw parking video and watch the system detect empty and occupied slots in real time.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>Deep Learning CNN</h3>
+        <p>Powered by a custom Convolutional Neural Network trained on the PKLot research dataset.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Live Analytics</h3>
+        <p>Real-time occupancy statistics, dynamic graphs and smart alerts updating every second.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🌤️</div>
+        <h3>Weather Robust</h3>
+        <p>Tested and validated on Sunny, Cloudy and Rainy conditions achieving 99% accuracy in all.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">🕘</div>
+        <h3>Session History</h3>
+        <p>Every processed video is saved to database. View complete graphs and stats from any past session.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Batch Prediction</h3>
+        <p>All 100 slots predicted in a single CNN call per frame for maximum speed and efficiency.</p>
+    </div>
+</div>
+
+{% endblock %}

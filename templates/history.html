@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    .session-card {
+        background-color : #0f3460;
+        border-radius    : 8px;
+        padding          : 18px;
+        margin-bottom    : 12px;
+        display          : flex;
+        justify-content  : space-between;
+        align-items      : center;
+        border           : 1px solid #1a3a6e;
+    }
+
+    .session-card:hover { border-color: #00ff88; }
+
+    .session-info  { flex: 1; }
+    .session-name  { color: white; font-size: 1rem;
+                     font-weight: bold; margin-bottom: 4px; }
+    .session-meta  { color: #888; font-size: 0.82rem; }
+
+    .session-stats { text-align: right; margin-right: 15px; }
+    .session-rate  { font-size: 1.3rem; font-weight: bold; color: #ffaa00; }
+    .session-sub   { color: #888; font-size: 0.8rem; }
+
+    .btn-view   { background-color:#00ff88; color:#1a1a2e;
+                  padding:8px 15px; border:none; border-radius:5px;
+                  cursor:pointer; font-weight:bold; font-size:0.85rem; }
+    .btn-delete { background-color:#ff4444; color:white;
+                  padding:8px 12px; border:none; border-radius:5px;
+                  cursor:pointer; font-size:0.85rem; margin-left:6px; }
+
+    .detail-panel {
+        background-color : #0d1b3e;
+        border-radius    : 10px;
+        padding          : 25px;
+        margin-top       : 20px;
+        border           : 1px solid #00ff8844;
+        display          : none;
+    }
+
+    .detail-panel h3 {
+        color: #00ff88;
+        margin-bottom: 20px;
+    }
+
+    .detail-grid {
+        display               : grid;
+        grid-template-columns : repeat(4, 1fr);
+        gap                   : 12px;
+        margin-bottom         : 20px;
+    }
+
+    .detail-card {
+        background-color : #0f3460;
+        border-radius    : 8px;
+        padding          : 15px;
+        text-align       : center;
+    }
+
+    .detail-label { color:#888; font-size:0.8rem; margin-bottom:5px; }
+    .detail-value { font-size:1.4rem; font-weight:bold; }
+
+    .empty-history    { text-align:center; color:#888; padding:40px 20px; }
+</style>
+
+<!-- Page Title -->
+<div style="margin-bottom:25px;">
+    <h1 style="color:#00ff88; font-size:1.8rem;">🕘 Session History</h1>
+    <p style="color:#888; margin-top:5px;">
+        View and compare all previously processed videos
+    </p>
+</div>
+
+<!-- Session List Card -->
+<div class="card">
+    <h2>📋 All Sessions</h2>
+    <div id="sessionList">
+        <div class="empty-history">⏳ Loading sessions...</div>
+    </div>
+</div>
+
+<!-- Session Detail Panel -->
+<div class="detail-panel" id="sessionDetail">
+    <h3 id="detailTitle">📹 Session Details</h3>
+
+    <div class="detail-grid">
+        <div class="detail-card">
+            <div class="detail-label">Avg Empty</div>
+            <div class="detail-value empty-color"
+                 id="detailAvgEmpty">--</div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-label">Avg Occupied</div>
+            <div class="detail-value"
+                 style="color:#ff4444"
+                 id="detailAvgOccupied">--</div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-label">Peak Rate</div>
+            <div class="detail-value"
+                 style="color:#ffaa00"
+                 id="detailPeakRate">--</div>
+        </div>
+        <div class="detail-card">
+            <div class="detail-label">Min Rate</div>
+            <div class="detail-value"
+                 style="color:#00ff88"
+                 id="detailMinRate">--</div>
+        </div>
+    </div>
+
+    <canvas id="sessionChart" height="100"></canvas>
+
+    <button class="btn-secondary"
+            style="margin-top:15px;"
+            onclick="hideDetail()">
+        ← Back to Sessions
+    </button>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let sessionChartInstance = null;
+
+    // ---- Load All Sessions ----
+    function loadSessions() {
+        fetch('/sessions')
+        .then(r => r.json())
+        .then(sessions => {
+            const list = document.getElementById('sessionList');
+
+            if (sessions.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-history">
+                        📭 No sessions yet!<br>
+                        <small>Process a video on the Dashboard to see history here.</small>
+                    </div>`;
+                return;
+            }
+
+            let html = '';
+            sessions.forEach(s => {
+                const icon = s.video_name.includes('cloudy') ? '☁️' :
+                             s.video_name.includes('rainy')  ? '🌧️' : '☀️';
+                html += `
+                    <div class="session-card">
+                        <div class="session-info">
+                            <div class="session-name">${icon} ${s.video_name}</div>
+                            <div class="session-meta">
+                                📅 ${s.date} &nbsp;
+                                ⏰ ${s.time} &nbsp;
+                                🎞️ ${s.total_frames} frames
+                            </div>
+                        </div>
+                        <div class="session-stats">
+                            <div class="session-rate">${s.avg_rate}%</div>
+                            <div class="session-sub">avg occupancy</div>
+                        </div>
+                        <button class="btn-view"
+                                onclick="viewSession(${s.id})">
+                            📊 View
+                        </button>
+                        <button class="btn-delete"
+                                onclick="deleteSession(${s.id})">
+                            🗑️
+                        </button>
+                    </div>`;
+            });
+            list.innerHTML = html;
+        });
+    }
+
+    // ---- View Session ----
+    function viewSession(id) {
+        fetch(`/session/${id}`)
+        .then(r => r.json())
+        .then(s => {
+            document.getElementById('sessionDetail').style.display = 'block';
+            document.getElementById('detailTitle').textContent =
+                `📹 ${s.video_name} — ${s.date} ${s.time}`;
+            document.getElementById('detailAvgEmpty').textContent    = s.avg_empty;
+            document.getElementById('detailAvgOccupied').textContent = s.avg_occupied;
+            document.getElementById('detailPeakRate').textContent    = s.peak_rate + '%';
+            document.getElementById('detailMinRate').textContent     = s.min_rate + '%';
+
+            if (sessionChartInstance) sessionChartInstance.destroy();
+
+            sessionChartInstance = new Chart(
+                document.getElementById('sessionChart').getContext('2d'), {
+                type : 'line',
+                data : {
+                    labels   : s.frames.map(f => 'F' + f.frame_no),
+                    datasets : [{
+                        label:'Occupied', data: s.frames.map(f=>f.occupied),
+                        borderColor:'#ff4444', backgroundColor:'#ff444433',
+                        tension:0.4, fill:true
+                    },{
+                        label:'Empty', data: s.frames.map(f=>f.empty),
+                        borderColor:'#00ff88', backgroundColor:'#00ff8833',
+                        tension:0.4, fill:true
+                    }]
+                },
+                options:{
+                    responsive:true,
+                    plugins:{legend:{labels:{color:'white'}}},
+                    scales:{
+                        x:{ticks:{color:'white'}, grid:{color:'#ffffff11'}},
+                        y:{ticks:{color:'white'}, grid:{color:'#ffffff11'}, min:0, max:100}
+                    }
+                }
+            });
+
+            document.getElementById('sessionDetail')
+                    .scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // ---- Hide Detail ----
+    function hideDetail() {
+        document.getElementById('sessionDetail').style.display = 'none';
+        if (sessionChartInstance) {
+            sessionChartInstance.destroy();
+            sessionChartInstance = null;
+        }
+    }
+
+    // ---- Delete Session ----
+    function deleteSession(id) {
+        if (!confirm('Delete this session? This cannot be undone!')) return;
+        fetch(`/session/${id}/delete`, { method: 'POST' })
+        .then(r => r.json())
+        .then(() => { hideDetail(); loadSessions(); });
+    }
+
+    loadSessions();
+</script>
+{% endblock %}
